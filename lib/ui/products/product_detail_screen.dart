@@ -29,7 +29,7 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              '\${product.price}VNĐ', // Format the price as currency
+              '${product.price}\VNĐ', // Format the price as currency
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,

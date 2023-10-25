@@ -17,22 +17,21 @@ class ProductsManager {
       description: 'Siêu tiết kiệm điện !',
       price: 59.000,
       imageUrl:
-          'https://cohoi.tuoitre.vn/upload/hinhbaiviet/images/2020/Thang-06/17-06/170620_kingshop_1.jpg',
+          'https://oanhson.com.vn/product_images/i/521/am-sieu-toc-sunhouse-shd1182-18l__15221_std.jpg',
     ),
     Product(
       id: 'p3',
       title: 'Bếp điện từ',
       description: 'Chất lượng đến từ Nhật Bản.',
-      price: 19.99,
+      price: 190.00,
       imageUrl: 'http://www.bepquangnam.vn/uploads/20180721/Untitled-11.jpg',
     ),
     Product(
       id: 'p4',
       title: 'Máy xây sinh tố',
       description: 'Tốc độ siêu mạnh',
-      price: 49.99,
-      imageUrl:
-          '	https://cohoi.tuoitre.vn/upload/lib_item/240723_kingshop_1.jpg',
+      price: 490.000,
+      imageUrl: 'https://anhchinh.vn/media/product/10999_10.jpg',
       isFavorite: true,
     ),
   ];
