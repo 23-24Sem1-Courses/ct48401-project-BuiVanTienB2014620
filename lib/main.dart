@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'ui/products/product_detail_screen.dart';
+import 'ui/products/products_manager.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -10,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MyShop',
+      title: 'Shop Gia Dụng',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Lato',
@@ -20,18 +23,9 @@ class MyApp extends StatelessWidget {
           secondary: Colors.deepOrange,
         ),
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('MyShop'),
-        ),
-        body: Center(
-          child: Text(
-            'Chào mừng bạn đến với Shop bán hàng!',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+      home: SafeArea(
+        child: ProductDetailScreen(
+          ProductsManager().items[0],
         ),
       ),
     );
