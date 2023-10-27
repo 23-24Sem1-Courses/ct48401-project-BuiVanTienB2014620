@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myshop/ui/products/products_manager.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/product.dart';
 
@@ -33,8 +35,17 @@ class UserProductListTile extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.delete),
       onPressed: () {
-        print('Xóa sản phẩm');
-        // Add your logic to delete the product here
+        context.read<ProductsManager>().deleteProduct(product.id!);
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Product deleted',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
       },
       color: Theme.of(context).colorScheme.error,
     );

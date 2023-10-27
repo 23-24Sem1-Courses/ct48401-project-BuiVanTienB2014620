@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../shared/app_drawer.dart';
 import 'order_item_card.dart';
@@ -10,17 +11,19 @@ class OrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Building orders');
-    final ordersManager = OrdersManager();
-
+    print('Xây dựng đạt hàng');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Đặt hàng'),
+        title: const Text('Đơn đặt hàng của bạn'),
       ),
       drawer: const AppDrawer(),
-      body: ListView.builder(
-        itemCount: ordersManager.orderCount,
-        itemBuilder: (ctx, i) => OrderItemCard(ordersManager.orders[i]),
+      body: Consumer<OrdersManager>(
+        builder: (ctx, ordersManager, child) {
+          return ListView.builder(
+            itemCount: ordersManager.orderCount,
+            itemBuilder: (ctx, i) => OrderItemCard(ordersManager.orders[i]),
+          );
+        },
       ),
     );
   }

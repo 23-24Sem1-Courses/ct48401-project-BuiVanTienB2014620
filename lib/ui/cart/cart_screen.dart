@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myshop/ui/orders/order_manager.dart';
+import 'package:provider/provider.dart';
 
 import 'cart_item_card.dart';
 import 'cart_manager.dart';
@@ -10,8 +12,7 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = CartManager();
-
+    final cart = context.watch<CartManager>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Giỏ hàng của bạn'),
@@ -64,14 +65,19 @@ class CartScreen extends StatelessWidget {
               backgroundColor: Theme.of(context).primaryColor,
             ),
             TextButton(
-              onPressed: () {
-                // Handle the order action
-                print('Một sản phẩm dược thêm');
-              },
+              onPressed: cart.totalAmount <= 0
+                  ? null
+                  : () {
+                      context.read<OrdersManager>().addOrder(
+                            cart.products,
+                            cart.totalAmount,
+                          );
+                      cart.clearAllItems();
+                    },
               style: TextButton.styleFrom(
                 textStyle: TextStyle(color: Theme.of(context).primaryColor),
               ),
-              child: const Text('Đặt ngay'),
+              child: const Text('Đặt tại đây'),
             ),
           ],
         ),
