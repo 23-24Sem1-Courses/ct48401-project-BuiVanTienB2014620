@@ -45,13 +45,14 @@ class MyApp extends StatelessWidget {
 // onGenerateRoute sẽ được gọi khi không tìm thấy route yêu cầu
 // trong thuộc tính routes ở trên.
         onGenerateRoute: (settings) {
-          if (settings.name == ProductDetailScreen.routeName) {
-            final productId = settings.arguments as String;
+          if (settings.name == EditProductScreen.routeName) {
+            final productId = settings.arguments as String?;
             return MaterialPageRoute(
-              settings: settings,
               builder: (ctx) {
-                return ProductDetailScreen(
-                  ProductsManager().findById(productId)!,
+                return EditProductScreen(
+                  productId != null
+                      ? ctx.read<ProductsManager>().findById(productId)
+                      : null,
                 );
               },
             );

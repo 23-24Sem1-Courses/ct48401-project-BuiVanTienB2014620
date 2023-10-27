@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myshop/ui/products/products_manager.dart';
 import 'package:provider/provider.dart';
 
+import './edit_product_screen.dart';
 import '../../models/product.dart';
 
 class UserProductListTile extends StatelessWidget {
@@ -55,8 +56,10 @@ class UserProductListTile extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.edit),
       onPressed: () {
-        print('Chỉnh sửa sản phẩm');
-        // Add your logic to navigate to the edit product screen here
+        Navigator.of(context).pushNamed(
+          EditProductScreen.routeName,
+          arguments: product.id,
+        );
       },
       color: Theme.of(context).primaryColor,
     );

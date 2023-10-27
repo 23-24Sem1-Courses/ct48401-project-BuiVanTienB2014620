@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import './edit_product_screen.dart';
 import '../shared/app_drawer.dart';
 import 'products_manager.dart';
 import 'user_product_list_tile.dart';
@@ -17,7 +18,7 @@ class UserProductsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Sản phẩm của bạn'),
         actions: <Widget>[
-          buildAddButton(),
+          buildAddButton(context),
         ],
       ),
       drawer: const AppDrawer(),
@@ -49,13 +50,13 @@ class UserProductsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildAddButton() {
+  Widget buildAddButton(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.add),
       onPressed: () {
-        // Navigate to the "add product" or "edit product" screen
-        print('Đến trang chỉnh sửa');
-        // Add your navigation logic here
+        Navigator.of(context).pushNamed(
+          EditProductScreen.routeName,
+        );
       },
     );
   }
