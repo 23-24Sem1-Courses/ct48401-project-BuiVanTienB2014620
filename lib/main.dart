@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
-import 'ui/screens.dart';
+import './ui/screens.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load();
   runApp(const MyApp());
 }
 
@@ -12,10 +14,40 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return MaterialApp(
+    //   title: 'MyShop',
+    //   debugShowCheckedModeBanner: false,
+    //   theme: ThemeData(
+    //     fontFamily: 'Lato',
+    //     colorScheme: ColorScheme.fromSwatch(
+    //       primarySwatch: Colors.purple,
+    //     ).copyWith(
+    //       secondary: Colors.deepOrange,
+    //     ),
+    //   ),
+    //   home: const ProductsOverviewScreen(),
+
+    //   routes: {
+    //     CartScreen.routeName: (ctx) => const CartScreen(),
+    //     OrdersScreen.routeName: (ctx) => const OrdersScreen(),
+    //     UserProductsScreen.routeName: (ctx) => const UserProductsScreen(),
+    //   },
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (ctx) => AuthManager(),
+        ),
+        // ChangeNotifierProvider(
+        //   create: (ctx) => ProductsManager(),
+        // ),
+
+        ChangeNotifierProxyProvider<AuthManager, ProductsManager>(
           create: (ctx) => ProductsManager(),
+          update: (ctx, authManager, productsManager) {
+            productsManager!.authToken = authManager.authToken;
+            return productsManager;
+          },
         ),
         ChangeNotifierProvider(
           create: (ctx) => CartManager(),
@@ -24,42 +56,49 @@ class MyApp extends StatelessWidget {
           create: (ctx) => OrdersManager(),
         ),
       ],
-      child: MaterialApp(
-        title: 'Shop Gia Dụng',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: 'Lato',
-          colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.blue,
-          ).copyWith(
-            secondary: Colors.deepOrange,
-          ),
-        ),
-        home: const ProductsOverviewScreen(),
-        routes: {
-          CartScreen.routeName: (ctx) => const CartScreen(),
-          OrdersScreen.routeName: (ctx) => const OrdersScreen(),
-          UserProductsScreen.routeName: (ctx) => const UserProductsScreen(),
-        },
-// Các route với những xử lý nghiệp vụ trước khi chuyển trang.
-// onGenerateRoute sẽ được gọi khi không tìm thấy route yêu cầu
-// trong thuộc tính routes ở trên.
-        onGenerateRoute: (settings) {
-          if (settings.name == EditProductScreen.routeName) {
-            final productId = settings.arguments as String?;
-            return MaterialPageRoute(
-              builder: (ctx) {
-                return EditProductScreen(
-                  productId != null
-                      ? ctx.read<ProductsManager>().findById(productId)
-                      : null,
+      child: Consumer<AuthManager>(builder: (ctx, authManager, child) {
+        return MaterialApp(
+            title: 'MyShop',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: 'Lato',
+              colorScheme: ColorScheme.fromSwatch(
+                primarySwatch: Colors.purple,
+              ).copyWith(
+                secondary: Colors.deepOrange,
+              ),
+            ),
+            home: authManager.isAuth
+                ? const ProductsOverviewScreen()
+                : FutureBuilder(
+                    future: authManager.tryAutoLogin(),
+                    builder: (context, snapshot) {
+                      return snapshot.connectionState == ConnectionState.waiting
+                          ? const SplashScreen()
+                          : const AuthScreen();
+                    },
+                  ),
+            routes: {
+              CartScreen.routeName: (ctx) => const CartScreen(),
+              OrdersScreen.routeName: (ctx) => const OrdersScreen(),
+              UserProductsScreen.routeName: (ctx) => const UserProductsScreen(),
+            },
+            onGenerateRoute: (settings) {
+              if (settings.name == EditProductScreen.routeName) {
+                final productId = settings.arguments as String?;
+                return MaterialPageRoute(
+                  builder: (ctx) {
+                    return EditProductScreen(
+                      productId != null
+                          ? ctx.read<ProductsManager>().findById(productId)
+                          : null,
+                    );
+                  },
                 );
-              },
-            );
-          }
-          return null;
-        },
-      ),
+              }
+              return null;
+            });
+      }),
     );
   }
 }

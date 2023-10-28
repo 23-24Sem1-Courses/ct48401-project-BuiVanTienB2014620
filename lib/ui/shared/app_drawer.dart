@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../orders/orders_screen.dart';
-import '../products/user_products_screen.dart';
+import 'package:myshop/ui/screens.dart';
+import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -39,6 +38,17 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context)
                   .pushReplacementNamed(UserProductsScreen.routeName);
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.exit_to_app),
+            title: const Text('Đăng xuát'),
+            onTap: () {
+              Navigator.of(context)
+                ..pop()
+                ..pushReplacementNamed('/');
+              context.read<AuthManager>().logout();
             },
           ),
         ],

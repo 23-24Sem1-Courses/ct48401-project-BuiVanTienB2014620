@@ -25,7 +25,7 @@ class Product {
     return _isFavorite.value;
   }
 
-  ValueNotifier<bool> isFavoriteListenable() {
+  ValueNotifier<bool> get isFavoriteListenable {
     return _isFavorite;
   }
 
@@ -35,7 +35,7 @@ class Product {
     String? description,
     double? price,
     String? imageUrl,
-    bool? isFavorite,
+    bool? isFavorite, // Cũng thay đổi tên tham số này để tránh xung đột.
   }) {
     return Product(
       id: id ?? this.id,
@@ -44,6 +44,26 @@ class Product {
       price: price ?? this.price,
       imageUrl: imageUrl ?? this.imageUrl,
       isFavorite: isFavorite ?? this.isFavorite,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'price': price,
+      'imageUrl': imageUrl,
+    };
+  }
+
+  static Product fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'],
+      title: json['title'],
+      description: json['description'],
+      price: json['price'].toDouble(),
+      imageUrl: json['imageUrl'],
     );
   }
 }

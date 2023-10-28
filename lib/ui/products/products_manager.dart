@@ -1,49 +1,44 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
+import '../../models/auth_token.dart';
 import '../../models/product.dart';
+import '../../services/products_service.dart';
 
 class ProductsManager with ChangeNotifier {
-  final List<Product> _items = [
-    Product(
-      id: 'p1',
-      title: 'Nồi cơm điện',
-      description: 'Siêu tiết kiệm điện!',
-      price: 100.000,
-      imageUrl:
-          'https://cohoi.tuoitre.vn/upload/hinhbaiviet/images/2020/Thang-06/17-06/170620_kingshop_1.jpg',
-      isFavorite: true,
-    ),
-    Product(
-      id: 'p2',
-      title: 'Ấm nước siêu tốc ',
-      description: 'Siêu tiết kiệm điện !',
-      price: 59.000,
-      imageUrl:
-          'https://oanhson.com.vn/product_images/i/521/am-sieu-toc-sunhouse-shd1182-18l__15221_std.jpg',
-    ),
-    Product(
-      id: 'p3',
-      title: 'Bếp điện từ',
-      description: 'Chất lượng đến từ Nhật Bản.',
-      price: 190.00,
-      imageUrl: 'http://www.bepquangnam.vn/uploads/20180721/Untitled-11.jpg',
-    ),
-    Product(
-      id: 'p4',
-      title: 'Máy xây sinh tố',
-      description: 'Tốc độ siêu mạnh',
-      price: 490.000,
-      imageUrl: 'https://anhchinh.vn/media/product/10999_10.jpg',
-      isFavorite: true,
-    ),
-  ];
+  List<Product> _items = [];
+  final ProductsService _productsService;
 
-  int get itemCount => _items.length;
+  ProductsManager([AuthToken? authToken])
+      : _productsService = ProductsService(authToken);
 
-  List<Product> get items => [..._items];
+  set authToken(AuthToken? authToken) {
+    _productsService.authToken = authToken;
+  }
 
-  List<Product> get favoriteItems =>
-      _items.where((item) => item.isFavorite).toList();
+  Future<void> fetchProducts([bool filterByUser = false]) async {
+    _items = await _productsService.fetchProducts(filterByUser);
+    notifyListeners();
+  }
+
+  Future<void> addProduct(Product product) async {
+    final newProduct = await _productsService.addProduct(product);
+    if (newProduct != null) {
+      _items.add(newProduct);
+      notifyListeners();
+    }
+  }
+
+  int get itemCount {
+    return _items.length;
+  }
+
+  List<Product> get items {
+    return [..._items];
+  }
+
+  List<Product> get favoriteItems {
+    return _items.where((item) => item.isFavorite).toList();
+  }
 
   Product? findById(String id) {
     try {
@@ -53,25 +48,44 @@ class ProductsManager with ChangeNotifier {
     }
   }
 
-  void addProduct(Product product) {
-    _items.add(product.copyWith(id: 'p${DateTime.now().toIso8601String()}'));
-    notifyListeners();
-  }
+  // void addProduct(Product product) {
+  //   _items.add(
+  //     product.copyWith(
+  //       id: 'p${DateTime.now().toIso8601String()}',
+  //     ),
+  //   );
+  //   notifyListeners();
+  // }
 
-  void updateProduct(Product product) {
+  Future<void> updateProduct(Product product) async {
     final index = _items.indexWhere((item) => item.id == product.id);
-    if (index != -1) {
-      _items[index] = product;
-      notifyListeners();
+
+    if (index >= 0) {
+      if (await _productsService.updateProduct(product)) {
+        _items[index] = product;
+        notifyListeners();
+      }
     }
   }
 
-  void toggleFavoriteStatus(Product product) {
-    product.isFavorite = !product.isFavorite;
+  Future<void> toggleFavoriteProduct(Product product) async {
+    final saveStatus = product.isFavorite;
+    product.isFavorite = !saveStatus;
+
+    if (!await _productsService.saveFavoriteProduct(product)) {
+      product.isFavorite = saveStatus;
+    }
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((item) => item.id == id);
+  Future<void> deleteProduct(String id) async {
+    final index = _items.indexWhere((item) => item.id == id);
+    Product? existingProduct = _items[index];
+    _items.removeAt(index);
     notifyListeners();
+
+    if (!await _productsService.deleteProduct(id)) {
+      _items.insert(index, existingProduct);
+      notifyListeners();
+    }
   }
 }

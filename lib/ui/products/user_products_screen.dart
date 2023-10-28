@@ -12,36 +12,41 @@ class UserProductsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productsManager = ProductsManager();
-
+    // final productsManager = ProductsManager();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sản phẩm của bạn'),
+        title: const Text('Your Products'),
         actions: <Widget>[
           buildAddButton(context),
         ],
       ),
       drawer: const AppDrawer(),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          print('Làm mới sản phẩm');
-          // Add your logic to refresh products here
+      body: FutureBuilder(
+        future: context.read<ProductsManager>().fetchProducts(true),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return RefreshIndicator(
+            onRefresh: () =>
+                context.read<ProductsManager>().fetchProducts(true),
+            child: buildUserProductListView(),
+          );
         },
-        child: buildUserProductListView(productsManager),
       ),
     );
   }
 
-  Widget buildUserProductListView(productsManager) {
+  Widget buildUserProductListView() {
     return Consumer<ProductsManager>(
       builder: (ctx, productsManager, child) {
         return ListView.builder(
           itemCount: productsManager.itemCount,
           itemBuilder: (ctx, i) => Column(
             children: [
-              UserProductListTile(
-                productsManager.items[i],
-              ),
+              UserProductListTile(productsManager.items[i]),
               const Divider(),
             ],
           ),

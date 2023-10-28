@@ -35,7 +35,7 @@ class ProductGridTile extends StatelessWidget {
     return GridTileBar(
       backgroundColor: Colors.black87,
       leading: ValueListenableBuilder<bool>(
-        valueListenable: product.isFavoriteListenable(),
+        valueListenable: product.isFavoriteListenable,
         builder: (ctx, isFavorite, child) {
           return IconButton(
             icon: Icon(
@@ -64,11 +64,11 @@ class ProductGridTile extends StatelessWidget {
             ..showSnackBar(
               SnackBar(
                 content: const Text(
-                  'Item added to cart',
+                  'Mặt hàng đã được thêm vào giỏ hàng',
                 ),
                 duration: const Duration(seconds: 2),
                 action: SnackBarAction(
-                  label: 'UNDO',
+                  label: 'HOÀN TÁC',
                   onPressed: () {
                     cart.removeItem(product.id!);
                   },
