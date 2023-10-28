@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:myshop/ui/products/products_manager.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/product.dart';
 import '../shared/dialog_utils.dart';
-import 'products_manager.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product';
-
   EditProductScreen(
     Product? product, {
     super.key,
@@ -35,9 +34,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _editForm = GlobalKey<FormState>();
   late Product _editedProduct;
   var _isLoading = false;
-
   bool _isValidImageUrl(String value) {
-    return (value.startsWith('http') || value.startsWith('https')) &&
+    return (value.startsWith('http') || value.startsWith('http')) &&
         (value.endsWith('.png') ||
             value.endsWith('.jpg') ||
             value.endsWith('.jpeg'));
@@ -72,6 +70,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
 
     _editForm.currentState!.save();
+
     setState(() {
       _isLoading = true;
     });
@@ -79,20 +78,21 @@ class _EditProductScreenState extends State<EditProductScreen> {
     try {
       final productsManager = context.read<ProductsManager>();
       if (_editedProduct.id != null) {
-        productsManager.updateProduct(_editedProduct);
+        await productsManager.updateProduct(_editedProduct);
       } else {
-        productsManager.updateProduct(_editedProduct);
+        await productsManager.addProduct(_editedProduct);
       }
     } catch (error) {
-      await showErrorDialog(context, 'Something went wrong.');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-
       if (mounted) {
-        Navigator.of(context).pop();
+        await showErrorDialog(context, 'Something went wrong.');
       }
+    }
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (mounted) {
+      Navigator.of(context).pop();
     }
   }
 
@@ -132,12 +132,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
   TextFormField buildTitleField() {
     return TextFormField(
       initialValue: _editedProduct.title,
-      decoration: InputDecoration(labelText: 'Title'),
+      decoration: const InputDecoration(labelText: 'Title'),
       textInputAction: TextInputAction.next,
       autofocus: true,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please provide a value.';
+          return 'Please provide a value';
         }
         return null;
       },
@@ -150,7 +150,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   TextFormField buildPriceField() {
     return TextFormField(
       initialValue: _editedProduct.price.toString(),
-      decoration: InputDecoration(labelText: 'Price'),
+      decoration: const InputDecoration(labelText: 'Price'),
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.number,
       validator: (value) {
@@ -158,10 +158,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
           return 'Please enter a price.';
         }
         if (double.tryParse(value) == null) {
-          return 'Please enter a valid number.';
+          return 'Please enter a valid number';
         }
         if (double.parse(value) <= 0) {
-          return 'Please enter a number greater than zero.';
+          return 'please enter a number greater than zero';
         }
         return null;
       },
@@ -174,7 +174,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   TextFormField buildDescriptionField() {
     return TextFormField(
       initialValue: _editedProduct.description,
-      decoration: InputDecoration(labelText: 'Description'),
+      decoration: const InputDecoration(labelText: 'Description'),
       maxLines: 3,
       keyboardType: TextInputType.multiline,
       validator: (value) {
@@ -199,15 +199,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
         Container(
           width: 100,
           height: 100,
-          margin: const EdgeInsets.only(top: 8, right: 10),
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 1,
-              color: Colors.grey,
-            ),
+          margin: const EdgeInsets.only(
+            top: 8,
+            right: 10,
           ),
+          decoration: BoxDecoration(
+              border: Border.all(
+            width: 1,
+            color: Colors.grey,
+          )),
           child: _imageUrlController.text.isEmpty
-              ? Center(child: Text('Enter a URL'))
+              ? const Text('Enter a URL')
               : FittedBox(
                   child: Image.network(
                     _imageUrlController.text,
@@ -224,7 +226,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   TextFormField buildImageURLField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Image URL'),
+      decoration: const InputDecoration(
+        labelText: 'Image URL',
+      ),
       keyboardType: TextInputType.url,
       textInputAction: TextInputAction.done,
       controller: _imageUrlController,
