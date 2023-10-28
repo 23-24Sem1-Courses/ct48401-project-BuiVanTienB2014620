@@ -12,8 +12,8 @@ class AppBanner extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
       padding: const EdgeInsets.symmetric(
-        vertical: 10.0,
-        horizontal: 100.0,
+        vertical: 8.0,
+        horizontal: 94.0,
       ),
       transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
       decoration: BoxDecoration(
@@ -28,10 +28,10 @@ class AppBanner extends StatelessWidget {
         ],
       ),
       child: Text(
-        'Shop Gia Dụng',
+        'MyShop',
         style: TextStyle(
           color: Theme.of(context).textTheme.titleLarge?.color,
-          fontSize: 30,
+          fontSize: 50,
           fontFamily: 'Anton',
           fontWeight: FontWeight.normal,
         ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:myshop/ui/screens.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/product.dart';
+import '../cart/cart_manager.dart';
+import 'product_detail_screen.dart';
+import 'products_manager.dart';
 
 class ProductGridTile extends StatelessWidget {
   const ProductGridTile(
@@ -16,16 +18,27 @@ class ProductGridTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.of(context).pushNamed(
-            ProductDetailScreen.routeName,
-            arguments: product.id,
-          );
-        },
-        child: Image.network(
-          product.imageUrl,
-          fit: BoxFit.cover,
+      child: GridTile(
+        footer: buildGridFooterBar(context),
+        // child: GestureDetector(
+        //   onTap: () {
+        //     Navigator.of(context).push(
+        //       MaterialPageRoute(
+        //         builder: (ctx) => ProductDetailScreen(product),
+        //       ),
+        //     );
+        //   },
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed(
+              ProductDetailScreen.routeName,
+              arguments: product.id,
+            );
+          },
+          child: Image.network(
+            product.imageUrl,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
@@ -43,7 +56,7 @@ class ProductGridTile extends StatelessWidget {
             ),
             color: Theme.of(context).colorScheme.secondary,
             onPressed: () {
-              product.isFavorite = !isFavorite;
+              ctx.read<ProductsManager>().toggleFavoriteProduct(product);
             },
           );
         },
@@ -53,7 +66,7 @@ class ProductGridTile extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       trailing: IconButton(
-        icon: Icon(
+        icon: const Icon(
           Icons.shopping_cart,
         ),
         onPressed: () {
@@ -63,12 +76,10 @@ class ProductGridTile extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                content: const Text(
-                  'Mặt hàng đã được thêm vào giỏ hàng',
-                ),
+                content: const Text('Item added to cart'),
                 duration: const Duration(seconds: 2),
                 action: SnackBarAction(
-                  label: 'HOÀN TÁC',
+                  label: 'UNDO',
                   onPressed: () {
                     cart.removeItem(product.id!);
                   },

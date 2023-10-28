@@ -35,7 +35,7 @@ class CartScreen extends StatelessWidget {
           .map(
             (entry) => CartItemCard(
               productId: entry.key,
-              cartItem: entry.value,
+              cardItem: entry.value,
             ),
           )
           .toList(),
@@ -57,7 +57,7 @@ class CartScreen extends StatelessWidget {
             const Spacer(),
             Chip(
               label: Text(
-                '${cart.totalAmount.toStringAsFixed(2)}\VNĐ',
+                '${cart.totalAmpunt.toStringAsFixed(2)}\VNĐ',
                 style: TextStyle(
                   color: Theme.of(context).primaryTextTheme.titleLarge?.color,
                 ),
@@ -65,12 +65,12 @@ class CartScreen extends StatelessWidget {
               backgroundColor: Theme.of(context).primaryColor,
             ),
             TextButton(
-              onPressed: cart.totalAmount <= 0
+              onPressed: cart.totalAmpunt <= 0
                   ? null
                   : () {
                       context.read<OrdersManager>().addOrder(
                             cart.products,
-                            cart.totalAmount,
+                            cart.totalAmpunt,
                           );
                       cart.clearAllItems();
                     },

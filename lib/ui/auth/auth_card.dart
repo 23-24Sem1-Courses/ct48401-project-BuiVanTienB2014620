@@ -127,7 +127,7 @@ class _AuthCardState extends State<AuthCard> {
         ),
       ),
       child:
-          Text('${_authMode == AuthMode.login ? 'Đăng Ký' : 'LOGIN'} INSTEAD'),
+          Text('${_authMode == AuthMode.login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
     );
   }
 
@@ -144,19 +144,19 @@ class _AuthCardState extends State<AuthCard> {
           color: Theme.of(context).primaryTextTheme.titleLarge?.color,
         ),
       ),
-      child: Text(_authMode == AuthMode.login ? 'Đăng Nhập' : 'Đăng nhập'),
+      child: Text(_authMode == AuthMode.login ? 'LOGIN' : 'SIGN UP'),
     );
   }
 
   Widget _buildPasswordConfirmField() {
     return TextFormField(
       enabled: _authMode == AuthMode.signup,
-      decoration: const InputDecoration(labelText: 'Nhập lại mật khẩu'),
+      decoration: const InputDecoration(labelText: 'Confirm Password'),
       obscureText: true,
       validator: _authMode == AuthMode.signup
           ? (value) {
               if (value != _passwordController.text) {
-                return 'Mật khẩu không hợp lệ!';
+                return 'Passwords do not match!';
               }
               return null;
             }
@@ -166,12 +166,12 @@ class _AuthCardState extends State<AuthCard> {
 
   Widget _buildPasswordField() {
     return TextFormField(
-      decoration: const InputDecoration(labelText: 'mật khẩu'),
+      decoration: const InputDecoration(labelText: 'Password'),
       obscureText: true,
       controller: _passwordController,
       validator: (value) {
         if (value == null || value.length < 5) {
-          return 'Mật khẩu quá lớn!';
+          return 'Password is too short!';
         }
         return null;
       },
@@ -187,7 +187,7 @@ class _AuthCardState extends State<AuthCard> {
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
         if (value!.isEmpty || !value.contains('@')) {
-          return 'Email không hợp lệ!';
+          return 'Invalid email!';
         }
         return null;
       },

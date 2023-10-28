@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../models/cart_item.dart';
 import '../../models/order_item.dart';
@@ -7,19 +8,18 @@ class OrdersManager with ChangeNotifier {
   final List<OrderItem> _orders = [
     OrderItem(
       id: 'o1',
-      amount: 200.000,
+      amount: 59.98,
       products: [
         CartItem(
           id: 'c1',
-          title: 'Nồi Cơm Điện',
-          price: 100.000,
+          title: 'Red Shirt',
+          price: 29.29,
           quantity: 2,
-        ),
+        ) //CartItem
       ],
       dateTime: DateTime.now(),
-    ),
+    )
   ];
-
   int get orderCount {
     return _orders.length;
   }
@@ -28,7 +28,7 @@ class OrdersManager with ChangeNotifier {
     return [..._orders];
   }
 
-  void addOrder(List<CartItem> cartProducts, double total) {
+  void addOrder(List<CartItem> cartProducts, double total) async {
     _orders.insert(
       0,
       OrderItem(
@@ -38,6 +38,7 @@ class OrdersManager with ChangeNotifier {
         dateTime: DateTime.now(),
       ),
     );
+
     notifyListeners();
   }
 }

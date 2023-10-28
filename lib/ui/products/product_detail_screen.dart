@@ -30,13 +30,15 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              '${product.price}\VNĐ', // Format the price as currency
+              '\$${product.price}',
               style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
+                color: Colors.grey,
+                fontSize: 20,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(
+              height: 10,
+            ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
@@ -45,7 +47,7 @@ class ProductDetailScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 softWrap: true,
               ),
-            ),
+            )
           ],
         ),
       ),

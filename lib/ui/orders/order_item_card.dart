@@ -24,38 +24,39 @@ class _OrderItemCardState extends State<OrderItemCard> {
       child: Column(
         children: <Widget>[
           buildOrderSummary(),
-          if (_expanded) buildOrderDetails(),
+          if (_expanded) buildOrderDetails()
         ],
       ),
     );
   }
+  //chi tiết
 
   Widget buildOrderDetails() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-      height: min(widget.order.productCount * 20.8 + 10, 100),
+      height: min(widget.order.productCount * 20.0 + 10, 100),
       child: ListView(
-        children: widget.order.products.map((prod) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                prod.title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                '${prod.quantity}x \$${prod.price}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          );
-        }).toList(),
+        children: widget.order.products
+            .map((prod) => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      prod.title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${prod.quantity}x \$${prod.price}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey,
+                      ),
+                    )
+                  ],
+                ))
+            .toList(),
       ),
     );
   }

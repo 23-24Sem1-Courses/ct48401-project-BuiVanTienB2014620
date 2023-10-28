@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:myshop/ui/cart/cart_manager.dart';
+import 'package:myshop/ui/shared/dialog_utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/cart_item.dart';
-import '../shared/dialog_utils.dart';
+import 'cart_manager.dart';
 
 class CartItemCard extends StatelessWidget {
   final String productId;
-  final CartItem cartItem;
+  final CartItem cardItem;
 
   const CartItemCard({
     required this.productId,
-    required this.cartItem,
+    required this.cardItem,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: ValueKey(cartItem.id),
+      key: ValueKey(cardItem.id),
       background: Container(
         color: Theme.of(context).colorScheme.error,
         alignment: Alignment.centerRight,
@@ -35,9 +35,9 @@ class CartItemCard extends StatelessWidget {
       ),
       direction: DismissDirection.endToStart,
       confirmDismiss: (direction) {
-        return showConfirmDialog(
+        return showConfirmDialong(
           context,
-          'Bạn có muốn xóa sản phẩm khỏi giỏ hàng',
+          'Do you want to remove the item from the cart?',
         );
       },
       onDismissed: (direction) {
@@ -60,13 +60,13 @@ class CartItemCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(5),
               child: FittedBox(
-                child: Text('\${cardItem.price}'),
+                child: Text('\$${cardItem.price}'),
               ),
             ),
           ),
-          title: Text(cartItem.title),
-          subtitle: Text('Tổng: ${(cartItem.price * cartItem.quantity)}\VNĐ'),
-          trailing: Text('${cartItem.quantity} x'),
+          title: Text(cardItem.title),
+          subtitle: Text('Total: \$${(cardItem.price * cardItem.quantity)}'),
+          trailing: Text('${cardItem.quantity} x'),
         ),
       ),
     );
