@@ -96,7 +96,7 @@ class _AuthCardState extends State<AuthCard> {
                 _buildPasswordField(),
                 if (_authMode == AuthMode.signup) _buildPasswordConfirmField(),
                 const SizedBox(
-                  height: 20,
+                  height: 9.0,
                 ),
                 ValueListenableBuilder<bool>(
                   valueListenable: _isSubmitting,
@@ -123,7 +123,9 @@ class _AuthCardState extends State<AuthCard> {
         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         textStyle: TextStyle(
-          color: Theme.of(context).primaryColor,
+          color: _authMode == AuthMode.login
+              ? Theme.of(context).primaryColor // Màu cho LOGIN
+              : Colors.red, // Màu cho SIGNUP
         ),
       ),
       child:
@@ -141,59 +143,121 @@ class _AuthCardState extends State<AuthCard> {
         backgroundColor: Theme.of(context).primaryColor,
         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
         textStyle: TextStyle(
-          color: Theme.of(context).primaryTextTheme.titleLarge?.color,
+          color: const Color.fromARGB(255, 185, 155, 155),
         ),
       ),
       child: Text(_authMode == AuthMode.login ? 'LOGIN' : 'SIGN UP'),
     );
   }
 
+  // Widget _buildPasswordConfirmField() {
+  //   return TextFormField(
+
+  //     enabled: _authMode == AuthMode.signup,
+  //     decoration: const InputDecoration(labelText: 'Confirm Password'),
+  //     obscureText: true,
+  //     validator: _authMode == AuthMode.signup
+  //         ? (value) {
+  //             if (value != _passwordController.text) {
+  //               return 'Passwords do not match!';
+  //             }
+  //             return null;
+  //           }
+  //         : null,
+  //   );
+  // }
   Widget _buildPasswordConfirmField() {
-    return TextFormField(
-      enabled: _authMode == AuthMode.signup,
-      decoration: const InputDecoration(labelText: 'Confirm Password'),
-      obscureText: true,
-      validator: _authMode == AuthMode.signup
-          ? (value) {
-              if (value != _passwordController.text) {
-                return 'Passwords do not match!';
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey, // Màu viền
+          width: 2.0, // Độ dày của viền
+        ),
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      width: 400.0, // Đặt chiều rộng
+      height: 50.0, // Đặt chiều dài
+      margin: EdgeInsets.only(bottom: 10.0), // Đặt khoảng cách phía dưới
+      child: TextFormField(
+        enabled: _authMode == AuthMode.signup,
+        decoration: const InputDecoration(
+          labelText: 'Confirm Password',
+          border: InputBorder.none, // Loại bỏ viền mặc định của TextFormField
+        ),
+        obscureText: true,
+        validator: _authMode == AuthMode.signup
+            ? (value) {
+                if (value != _passwordController.text) {
+                  return 'Passwords do not match!';
+                }
+                return null;
               }
-              return null;
-            }
-          : null,
+            : null,
+      ),
     );
   }
 
   Widget _buildPasswordField() {
-    return TextFormField(
-      decoration: const InputDecoration(labelText: 'Password'),
-      obscureText: true,
-      controller: _passwordController,
-      validator: (value) {
-        if (value == null || value.length < 5) {
-          return 'Password is too short!';
-        }
-        return null;
-      },
-      onSaved: (value) {
-        _authData['password'] = value!;
-      },
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey, // Màu viền
+          width: 2.0, // Độ dày của viền
+        ),
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      width: 400.0, // Đặt chiều rộng
+      height: 50.0,
+      margin: EdgeInsets.only(bottom: 20.0), //
+
+      child: TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'Password',
+          border: InputBorder.none, // Loại bỏ viền mặc định của TextFormField
+        ),
+        obscureText: true,
+        controller: _passwordController,
+        validator: (value) {
+          if (value == null || value.length < 5) {
+            return 'Password is too short!';
+          }
+          return null;
+        },
+        onSaved: (value) {
+          _authData['password'] = value!;
+        },
+      ),
     );
   }
 
   Widget _buildEmailField() {
-    return TextFormField(
-      decoration: const InputDecoration(labelText: 'E-Mail'),
-      keyboardType: TextInputType.emailAddress,
-      validator: (value) {
-        if (value!.isEmpty || !value.contains('@')) {
-          return 'Invalid email!';
-        }
-        return null;
-      },
-      onSaved: (value) {
-        _authData['email'] = value!;
-      },
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey, // Màu viền
+          width: 2.0, // Độ dày của viền
+        ),
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      width: 400.0, // Đặt chiều rộng
+      height: 50.0, // Đặt chiều dài
+      margin: EdgeInsets.only(bottom: 20.0), // Đặt khoảng cách phía dưới
+      child: TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'E-Mail',
+          border: InputBorder.none, // Loại bỏ viền mặc định của TextFormField
+        ),
+        keyboardType: TextInputType.emailAddress,
+        validator: (value) {
+          if (value!.isEmpty || !value.contains('@')) {
+            return 'Invalid email!';
+          }
+          return null;
+        },
+        onSaved: (value) {
+          _authData['email'] = value!;
+        },
+      ),
     );
   }
 }

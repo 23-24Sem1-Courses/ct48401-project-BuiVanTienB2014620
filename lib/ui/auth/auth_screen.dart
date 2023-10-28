@@ -17,17 +17,27 @@ class AuthScreen extends StatelessWidget {
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  const Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-                  const Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: const [0, 1],
+              image: DecorationImage(
+                image: NetworkImage(
+                    'https://techrum.vn/chevereto/images/2017/05/21/1tTOV.jpg'), // Đặt đường dẫn đến hình ảnh nền của bạn
+                fit: BoxFit
+                    .cover, // Có thể điều chỉnh để phù hợp với nhu cầu của bạn
               ),
             ),
           ),
+          // Container(
+          //   decoration: BoxDecoration(
+          //     gradient: LinearGradient(
+          //       colors: [
+          //         const Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
+          //         const Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
+          //       ],
+          //       begin: Alignment.topLeft,
+          //       end: Alignment.bottomRight,
+          //       stops: const [0, 1],
+          //     ),
+          //   ),
+          // ),
           SingleChildScrollView(
             child: SizedBox(
               height: deviceSize.height,
