@@ -7,6 +7,7 @@ import '../../models/product.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product';
+
   EditProductScreen(
     Product? product, {
     super.key,
@@ -23,7 +24,9 @@ class EditProductScreen extends StatefulWidget {
       this.product = product;
     }
   }
+
   late final Product product;
+
   @override
   State<EditProductScreen> createState() => _EditProductScreenState();
 }
@@ -34,8 +37,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _editForm = GlobalKey<FormState>();
   late Product _editedProduct;
   var _isLoading = false;
+
   bool _isValidImageUrl(String value) {
-    return (value.startsWith('http') || value.startsWith('http')) &&
+    return (value.startsWith('http') || value.startsWith('https')) &&
         (value.endsWith('.png') ||
             value.endsWith('.jpg') ||
             value.endsWith('.jpeg'));
@@ -84,7 +88,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       }
     } catch (error) {
       if (mounted) {
-        await showErrorDialog(context, 'Something went wrong.');
+        await showErrorDialog(context, 'Đã xảy ra lỗi.');
       }
     }
     setState(() {
@@ -100,10 +104,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Product'),
+        title: const Text('Cập nhật sản phẩm'),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.save),
+            icon: const Icon(
+                Icons.check), // Thay biểu tượng "Lưu" bằng biểu tượng "Check"
             onPressed: _saveForm,
           ),
         ],
@@ -132,12 +137,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
   TextFormField buildTitleField() {
     return TextFormField(
       initialValue: _editedProduct.title,
-      decoration: const InputDecoration(labelText: 'Title'),
+      decoration: InputDecoration(
+        labelText: 'Tên sản phẩm',
+        border: OutlineInputBorder(),
+      ),
       textInputAction: TextInputAction.next,
       autofocus: true,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please provide a value';
+          return 'Vui lòng cung cấp một giá trị';
         }
         return null;
       },
@@ -150,18 +158,21 @@ class _EditProductScreenState extends State<EditProductScreen> {
   TextFormField buildPriceField() {
     return TextFormField(
       initialValue: _editedProduct.price.toString(),
-      decoration: const InputDecoration(labelText: 'Price'),
+      decoration: InputDecoration(
+        labelText: 'Giá',
+        border: OutlineInputBorder(),
+      ),
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter a price.';
+          return 'Vui lòng nhập giá.';
         }
         if (double.tryParse(value) == null) {
-          return 'Please enter a valid number';
+          return 'Vui lòng nhập một số hợp lệ';
         }
         if (double.parse(value) <= 0) {
-          return 'please enter a number greater than zero';
+          return 'Vui lòng nhập số lớn hơn 0';
         }
         return null;
       },
@@ -174,15 +185,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
   TextFormField buildDescriptionField() {
     return TextFormField(
       initialValue: _editedProduct.description,
-      decoration: const InputDecoration(labelText: 'Description'),
+      decoration: InputDecoration(
+        labelText: 'Miêu tả',
+        border: OutlineInputBorder(),
+      ),
       maxLines: 3,
       keyboardType: TextInputType.multiline,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter a description.';
+          return 'Vui lòng nhập mô tả.';
         }
         if (value.length < 10) {
-          return 'Should be at least 10 characters long.';
+          return 'Phải dài ít nhất 10 ký tự.';
         }
         return null;
       },
@@ -193,31 +207,21 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   Widget buildProductPreview() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
+    return Column(
       children: <Widget>[
-        Container(
-          width: 100,
-          height: 100,
-          margin: const EdgeInsets.only(
-            top: 8,
-            right: 10,
-          ),
-          decoration: BoxDecoration(
-              border: Border.all(
-            width: 1,
-            color: Colors.grey,
-          )),
+        CircleAvatar(
+          // Thay hình vuông bằng hình tròn
+          radius: 50,
+          backgroundColor: Colors.grey[300],
+          backgroundImage: _imageUrlController.text.isEmpty
+              ? null
+              : NetworkImage(_imageUrlController.text),
           child: _imageUrlController.text.isEmpty
-              ? const Text('Enter a URL')
-              : FittedBox(
-                  child: Image.network(
-                    _imageUrlController.text,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+              ? Icon(Icons.image, size: 40, color: Colors.grey)
+              : null,
         ),
-        Expanded(
+        Padding(
+          padding: const EdgeInsets.all(8),
           child: buildImageURLField(),
         ),
       ],
@@ -226,8 +230,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   TextFormField buildImageURLField() {
     return TextFormField(
-      decoration: const InputDecoration(
-        labelText: 'Image URL',
+      decoration: InputDecoration(
+        labelText: 'URL hình ảnh',
+        border: OutlineInputBorder(),
       ),
       keyboardType: TextInputType.url,
       textInputAction: TextInputAction.done,
@@ -236,10 +241,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
       onFieldSubmitted: (value) => _saveForm(),
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter an image URL.';
+          return 'Vui lòng nhập URL hình ảnh';
         }
         if (!_isValidImageUrl(value)) {
-          return 'Please enter a valid image URL.';
+          return 'Vui lòng nhập URL hình ảnh hợp lệ.';
         }
         return null;
       },

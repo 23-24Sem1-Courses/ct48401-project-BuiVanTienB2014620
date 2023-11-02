@@ -15,7 +15,7 @@ class UserProductsScreen extends StatelessWidget {
     // final productsManager = ProductsManager();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Products'),
+        title: const Text('Sản phảm của bạn'),
         actions: <Widget>[
           buildAddButton(context),
         ],
@@ -57,7 +57,7 @@ class UserProductsScreen extends StatelessWidget {
 
   Widget buildAddButton(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.add),
+      icon: const Icon(Icons.add_circle),
       onPressed: () {
         Navigator.of(context).pushNamed(
           EditProductScreen.routeName,

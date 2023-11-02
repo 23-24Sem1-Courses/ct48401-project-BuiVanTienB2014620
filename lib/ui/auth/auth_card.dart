@@ -36,13 +36,13 @@ class _AuthCardState extends State<AuthCard> {
 
     try {
       if (_authMode == AuthMode.login) {
-        // Log user in
+        // Đăng nhập
         await context.read<AuthManager>().login(
               _authData['email']!,
               _authData['password']!,
             );
       } else {
-        // Sign user up
+        // Đăng ký
         await context.read<AuthManager>().signup(
               _authData['email']!,
               _authData['password']!,
@@ -51,10 +51,9 @@ class _AuthCardState extends State<AuthCard> {
     } catch (error) {
       if (mounted) {
         showErrorDialog(
-            context,
-            (error is HttpException)
-                ? error.toString()
-                : 'Authentication failed');
+          context,
+          (error is HttpException) ? error.toString() : 'Xác thực thất bại',
+        );
       }
     }
 
@@ -124,12 +123,12 @@ class _AuthCardState extends State<AuthCard> {
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         textStyle: TextStyle(
           color: _authMode == AuthMode.login
-              ? Theme.of(context).primaryColor // Màu cho LOGIN
+              ? Colors.green // Màu cho LOGIN
               : Colors.red, // Màu cho SIGNUP
         ),
       ),
-      child:
-          Text('${_authMode == AuthMode.login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+      child: Text(
+          '${_authMode == AuthMode.login ? 'ĐĂNG KÝ' : 'ĐĂNG NHẬP'} .Chưa tài khoản?'),
     );
   }
 
@@ -140,32 +139,16 @@ class _AuthCardState extends State<AuthCard> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.green, // Màu nền cho nút
         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
         textStyle: TextStyle(
-          color: const Color.fromARGB(255, 185, 155, 155),
+          color: Colors.white, // Màu cho chữ trên nút
         ),
       ),
-      child: Text(_authMode == AuthMode.login ? 'LOGIN' : 'SIGN UP'),
+      child: Text(_authMode == AuthMode.login ? 'ĐĂNG NHẬP' : 'ĐĂNG KÝ'),
     );
   }
 
-  // Widget _buildPasswordConfirmField() {
-  //   return TextFormField(
-
-  //     enabled: _authMode == AuthMode.signup,
-  //     decoration: const InputDecoration(labelText: 'Confirm Password'),
-  //     obscureText: true,
-  //     validator: _authMode == AuthMode.signup
-  //         ? (value) {
-  //             if (value != _passwordController.text) {
-  //               return 'Passwords do not match!';
-  //             }
-  //             return null;
-  //           }
-  //         : null,
-  //   );
-  // }
   Widget _buildPasswordConfirmField() {
     return Container(
       decoration: BoxDecoration(
@@ -181,14 +164,14 @@ class _AuthCardState extends State<AuthCard> {
       child: TextFormField(
         enabled: _authMode == AuthMode.signup,
         decoration: const InputDecoration(
-          labelText: 'Confirm Password',
+          labelText: 'Xác nhận Mật khẩu',
           border: InputBorder.none, // Loại bỏ viền mặc định của TextFormField
         ),
         obscureText: true,
         validator: _authMode == AuthMode.signup
             ? (value) {
                 if (value != _passwordController.text) {
-                  return 'Passwords do not match!';
+                  return 'Mật khẩu không trùng khớp!';
                 }
                 return null;
               }
@@ -212,14 +195,14 @@ class _AuthCardState extends State<AuthCard> {
 
       child: TextFormField(
         decoration: const InputDecoration(
-          labelText: 'Password',
+          labelText: 'Mật khẩu',
           border: InputBorder.none, // Loại bỏ viền mặc định của TextFormField
         ),
         obscureText: true,
         controller: _passwordController,
         validator: (value) {
           if (value == null || value.length < 5) {
-            return 'Password is too short!';
+            return 'Mật khẩu quá ngắn!';
           }
           return null;
         },
@@ -250,7 +233,7 @@ class _AuthCardState extends State<AuthCard> {
         keyboardType: TextInputType.emailAddress,
         validator: (value) {
           if (value!.isEmpty || !value.contains('@')) {
-            return 'Invalid email!';
+            return 'Email không hợp lệ!';
           }
           return null;
         },

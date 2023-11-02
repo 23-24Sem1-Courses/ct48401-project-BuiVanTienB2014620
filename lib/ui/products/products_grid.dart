@@ -12,9 +12,6 @@ class ProductsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final productsManager = ProductsManager();
-    // Đọc ra List<Product> sẽ được hiển thị từ ProductManager
-
     final products = context.select<ProductsManager, List<Product>>(
         (productsManager) => showFavorites
             ? productsManager.favoriteItems

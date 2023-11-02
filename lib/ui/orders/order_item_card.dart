@@ -29,7 +29,6 @@ class _OrderItemCardState extends State<OrderItemCard> {
       ),
     );
   }
-  //chi tiết
 
   Widget buildOrderDetails() {
     return Container(
@@ -48,7 +47,7 @@ class _OrderItemCardState extends State<OrderItemCard> {
                       ),
                     ),
                     Text(
-                      '${prod.quantity}x \$${prod.price}',
+                      '${prod.quantity}x ${prod.price.toStringAsFixed(3)}VNĐ',
                       style: const TextStyle(
                         fontSize: 18,
                         color: Colors.grey,
@@ -63,7 +62,7 @@ class _OrderItemCardState extends State<OrderItemCard> {
 
   Widget buildOrderSummary() {
     return ListTile(
-      title: Text('\$${widget.order.amount}'),
+      title: Text('${widget.order.amount.toStringAsFixed(3)}VNĐ'),
       subtitle: Text(
         DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime),
       ),

@@ -37,7 +37,7 @@ class CartItemCard extends StatelessWidget {
       confirmDismiss: (direction) {
         return showConfirmDialong(
           context,
-          'Do you want to remove the item from the cart?',
+          'Bạn có muốn xóa sản phẩm khỏi giỏ hàng không?',
         );
       },
       onDismissed: (direction) {
@@ -60,12 +60,13 @@ class CartItemCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(5),
               child: FittedBox(
-                child: Text('\$${cardItem.price}'),
+                child: Text('VNĐ${cardItem.price.toStringAsFixed(3)}'),
               ),
             ),
           ),
           title: Text(cardItem.title),
-          subtitle: Text('Total: \$${(cardItem.price * cardItem.quantity)}'),
+          subtitle: Text(
+              'Tổng cộng: VNĐ${(cardItem.price * cardItem.quantity).toStringAsFixed(3)}'),
           trailing: Text('${cardItem.quantity} x'),
         ),
       ),

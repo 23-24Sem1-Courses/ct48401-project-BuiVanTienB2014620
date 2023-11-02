@@ -57,7 +57,7 @@ class CartScreen extends StatelessWidget {
             const Spacer(),
             Chip(
               label: Text(
-                '${cart.totalAmpunt.toStringAsFixed(2)}\VNĐ',
+                '${cart.totalAmpunt.toStringAsFixed(3)}\VNĐ',
                 style: TextStyle(
                   color: Theme.of(context).primaryTextTheme.titleLarge?.color,
                 ),

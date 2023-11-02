@@ -48,15 +48,6 @@ class ProductsManager with ChangeNotifier {
     }
   }
 
-  // void addProduct(Product product) {
-  //   _items.add(
-  //     product.copyWith(
-  //       id: 'p${DateTime.now().toIso8601String()}',
-  //     ),
-  //   );
-  //   notifyListeners();
-  // }
-
   Future<void> updateProduct(Product product) async {
     final index = _items.indexWhere((item) => item.id == product.id);
 

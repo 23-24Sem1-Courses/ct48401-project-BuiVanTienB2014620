@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (ctx) => AuthManager(),
         ),
-
         ChangeNotifierProxyProvider<AuthManager, ProductsManager>(
           create: (ctx) => ProductsManager(),
           update: (ctx, authManager, productsManager) {
@@ -41,7 +40,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               fontFamily: 'Lato',
               colorScheme: ColorScheme.fromSwatch(
-                primarySwatch: Colors.purple,
+                primarySwatch: Colors.blue,
               ).copyWith(
                 secondary: Colors.deepOrange,
               ),
