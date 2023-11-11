@@ -61,18 +61,34 @@ class _OrderItemCardState extends State<OrderItemCard> {
   }
 
   Widget buildOrderSummary() {
-    return ListTile(
-      title: Text('${widget.order.amount.toStringAsFixed(3)}VNĐ'),
-      subtitle: Text(
-        DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime),
-      ),
-      trailing: IconButton(
-        icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
-        onPressed: () {
-          setState(() {
-            _expanded = !_expanded;
-          });
-        },
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey, // Set the background color to gray.
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(5),
+            topRight: Radius.circular(5),
+          ),
+        ),
+        child: ListTile(
+          title: Text(
+            'Tổng hóa đơn : ${widget.order.amount.toStringAsFixed(3)} VNĐ',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime),
+          ),
+          trailing: IconButton(
+            icon: Icon(_expanded ? Icons.close_fullscreen : Icons.open_in_new),
+            onPressed: () {
+              setState(() {
+                _expanded = !_expanded;
+              });
+            },
+          ),
+        ),
       ),
     );
   }

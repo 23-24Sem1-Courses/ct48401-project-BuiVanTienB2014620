@@ -57,16 +57,14 @@ class CartItemCard extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: ListTile(
           leading: CircleAvatar(
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: FittedBox(
-                child: Text('VNĐ${cardItem.price.toStringAsFixed(3)}'),
-              ),
+            child: Image.network(
+              cardItem.imageUrl,
+              fit: BoxFit.cover,
             ),
           ),
           title: Text(cardItem.title),
           subtitle: Text(
-              'Tổng cộng: VNĐ${(cardItem.price * cardItem.quantity).toStringAsFixed(3)}'),
+              'Tổng cộng: ${(cardItem.price * cardItem.quantity).toStringAsFixed(3)} VNĐ'),
           trailing: Text('${cardItem.quantity} x'),
         ),
       ),

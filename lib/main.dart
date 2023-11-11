@@ -4,13 +4,33 @@ import 'package:provider/provider.dart';
 
 import './ui/screens.dart';
 
-Future<void> main() async {
+void main() async {
   await dotenv.load();
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final List<Widget> pages = [
+    const ProductsOverviewScreen(),
+    const CartScreen(),
+    const OrdersScreen(),
+    const UserProductsScreen(),
+  ];
+
+  int _selectedPageIndex = 0;
+
+  void _selectPage(int index) {
+    setState(() {
+      _selectedPageIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,46 +55,98 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<AuthManager>(builder: (ctx, authManager, child) {
         return MaterialApp(
-            title: 'MyShop',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              fontFamily: 'Lato',
-              colorScheme: ColorScheme.fromSwatch(
-                primarySwatch: Colors.blue,
-              ).copyWith(
-                secondary: Colors.deepOrange,
-              ),
+          title: 'MyShop',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: 'Lato',
+            colorScheme: ColorScheme.fromSwatch(
+              primarySwatch: Colors.deepOrange,
+            ).copyWith(
+              secondary: Colors.deepOrange,
             ),
-            home: authManager.isAuth
-                ? const ProductsOverviewScreen()
-                : FutureBuilder(
-                    future: authManager.tryAutoLogin(),
-                    builder: (context, snapshot) {
-                      return snapshot.connectionState == ConnectionState.waiting
-                          ? const SplashScreen()
-                          : const AuthScreen();
-                    },
+          ),
+          home: authManager.isAuth
+              ? Scaffold(
+                  body: pages[_selectedPageIndex],
+                  bottomNavigationBar: BottomNavigationBar(
+                    items: const [
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.home),
+                        label: 'Home',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.shopping_cart),
+                        label: 'Cart',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.list),
+                        label: 'Orders',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.person),
+                        label: 'User',
+                      ),
+                    ],
+                    currentIndex: _selectedPageIndex,
+                    onTap: _selectPage,
                   ),
-            routes: {
-              CartScreen.routeName: (ctx) => const CartScreen(),
-              OrdersScreen.routeName: (ctx) => const OrdersScreen(),
-              UserProductsScreen.routeName: (ctx) => const UserProductsScreen(),
-            },
-            onGenerateRoute: (settings) {
-              if (settings.name == EditProductScreen.routeName) {
-                final productId = settings.arguments as String?;
-                return MaterialPageRoute(
-                  builder: (ctx) {
-                    return EditProductScreen(
-                      productId != null
-                          ? ctx.read<ProductsManager>().findById(productId)
-                          : null,
-                    );
+                  persistentFooterButtons: <Widget>[
+                    Container(
+                      color: Colors.deepOrange, // Màu nền cam cho footer
+                      height: 60, // Chiều cao của footer
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .spaceEvenly, // Các biểu tượng cách đều nhau
+                        children: <Widget>[
+                          Icon(
+                            Icons.home,
+                            color: Colors.white, // Màu biểu tượng trắng
+                            size: 30, // Kích thước biểu tượng
+                          ),
+                          Icon(
+                            Icons.shopping_cart,
+                            color: Colors.white, // Màu biểu tượng trắng
+                            size: 30, // Kích thước biểu tượng
+                          ),
+                          Icon(
+                            Icons.person,
+                            color: Colors.white, // Màu biểu tượng trắng
+                            size: 30, // Kích thước biểu tượng
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              : FutureBuilder(
+                  future: authManager.tryAutoLogin(),
+                  builder: (context, snapshot) {
+                    return snapshot.connectionState == ConnectionState.waiting
+                        ? const SplashScreen()
+                        : const AuthScreen();
                   },
-                );
-              }
-              return null;
-            });
+                ),
+          routes: {
+            CartScreen.routeName: (ctx) => const CartScreen(),
+            OrdersScreen.routeName: (ctx) => const OrdersScreen(),
+            UserProductsScreen.routeName: (ctx) => const UserProductsScreen(),
+          },
+          onGenerateRoute: (settings) {
+            if (settings.name == EditProductScreen.routeName) {
+              final productId = settings.arguments as String?;
+              return MaterialPageRoute(
+                builder: (ctx) {
+                  return EditProductScreen(
+                    productId != null
+                        ? ctx.read<ProductsManager>().findById(productId)
+                        : null,
+                  );
+                },
+              );
+            }
+            return null;
+          },
+        );
       }),
     );
   }

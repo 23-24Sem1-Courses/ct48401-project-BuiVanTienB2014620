@@ -25,7 +25,7 @@ class AppBanner extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            'Shop DT',
+            'Shop DT ',
             style: TextStyle(
               color: const Color.fromARGB(255, 185, 155, 155),
               fontSize: 50,

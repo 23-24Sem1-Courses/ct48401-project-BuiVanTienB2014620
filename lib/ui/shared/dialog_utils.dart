@@ -32,7 +32,7 @@ Future<void> showErrorDialog(BuildContext context, String message) async {
       content: Text(message),
       actions: <Widget>[
         TextButton(
-          child: const Text('Okay'),
+          child: const Text('Đồng ý'),
           onPressed: () {
             Navigator.of(ctx).pop();
           },

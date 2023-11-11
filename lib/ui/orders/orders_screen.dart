@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myshop/ui/screens.dart';
 import 'package:provider/provider.dart';
 
 import '../shared/app_drawer.dart';
@@ -11,7 +12,6 @@ class OrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Xây dựng đạt hàng');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Đơn đặt hàng của bạn'),

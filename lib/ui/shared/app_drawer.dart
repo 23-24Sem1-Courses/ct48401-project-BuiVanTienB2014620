@@ -16,16 +16,16 @@ class AppDrawer extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.shop),
-            title: const Text('Cửa hàng'),
+            leading: const Icon(Icons.home),
+            title: const Text('Trang chủ'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/');
             },
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.payment),
-            title: const Text('Đặt hàng'),
+            leading: const Icon(Icons.newspaper),
+            title: const Text('Hóa Đơn'),
             onTap: () {
               Navigator.of(context)
                   .pushReplacementNamed(OrdersScreen.routeName);
@@ -33,7 +33,7 @@ class AppDrawer extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.edit),
+            leading: const Icon(Icons.browser_updated_sharp),
             title: const Text('Quản lí sản phẩm'),
             onTap: () {
               Navigator.of(context)

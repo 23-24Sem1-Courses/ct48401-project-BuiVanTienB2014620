@@ -34,7 +34,7 @@ class UserProductListTile extends StatelessWidget {
 
   Widget buildDeleteButton(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.delete),
+      icon: const Icon(Icons.delete_forever_sharp),
       onPressed: () {
         context.read<ProductsManager>().deleteProduct(product.id!);
         ScaffoldMessenger.of(context)
@@ -42,7 +42,7 @@ class UserProductListTile extends StatelessWidget {
           ..showSnackBar(
             const SnackBar(
               content: Text(
-                'Xóa sản phẩm tành công',
+                'Xóa sản phẩm thành công',
                 textAlign: TextAlign.center,
               ),
             ),
@@ -54,7 +54,7 @@ class UserProductListTile extends StatelessWidget {
 
   Widget buildEditButton(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.edit),
+      icon: const Icon(Icons.edit_calendar),
       onPressed: () {
         Navigator.of(context).pushNamed(
           EditProductScreen.routeName,

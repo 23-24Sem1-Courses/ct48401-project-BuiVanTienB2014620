@@ -42,6 +42,7 @@ class CartManager with ChangeNotifier {
           title: product.title,
           price: product.price,
           quantity: 1,
+          imageUrl: product.imageUrl,
         ),
       );
     }
