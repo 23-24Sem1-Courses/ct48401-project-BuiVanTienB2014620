@@ -29,7 +29,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shop DT '),
+        title: const Text('Shop DT'),
         actions: <Widget>[
           buildProductFilterMenu(),
           buildShoppingCartIcon(),

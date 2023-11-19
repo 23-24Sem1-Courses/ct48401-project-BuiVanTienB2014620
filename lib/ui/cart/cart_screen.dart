@@ -9,7 +9,7 @@ class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
 
   const CartScreen({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     final cart = context.watch<CartManager>();
@@ -26,7 +26,7 @@ class CartScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    );                     
   }
 
   Widget buildCartDetails(CartManager cart) {
@@ -78,11 +78,11 @@ class CartScreen extends StatelessWidget {
               style: TextButton.styleFrom(
                 textStyle: TextStyle(color: Theme.of(context).primaryColor),
               ),
-              child: const Text('Đặt tại đây'),
+              child: const Text('Thanh toán'),             
             ),
           ],
         ),
       ),
-    );
+    );   
   }
 }
