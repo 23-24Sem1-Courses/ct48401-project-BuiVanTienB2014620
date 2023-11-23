@@ -1,10 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:myshop/ui/products/ItemBottomNavBar.dart';
 
 import '../../models/product.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:clippy_flutter/clippy_flutter.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   static const routeName = '/product-detail';
@@ -35,7 +34,7 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Padding(
-               padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 children: [
                   Text(
@@ -52,8 +51,8 @@ class ProductDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 3), // 5px left padding
               child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween, // Move the stars to the left
+                mainAxisAlignment: MainAxisAlignment
+                    .spaceBetween, // Move the stars to the left
                 children: [
                   RatingBar.builder(
                     initialRating: 4,
@@ -126,7 +125,7 @@ class ProductDetailScreen extends StatelessWidget {
                 ],
               ),
             ),
-          Container(
+            Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
@@ -134,10 +133,10 @@ class ProductDetailScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 softWrap: true,
                 style: TextStyle(
-                      fontSize: 15,
-                      color: Color(0xff4c53a5),
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontSize: 15,
+                  color: Color(0xff4c53a5),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Padding(
@@ -186,7 +185,7 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 8,horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
               child: Row(
                 children: [
                   Text(
@@ -226,7 +225,6 @@ class ProductDetailScreen extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-           
           ],
         ),
       ),
