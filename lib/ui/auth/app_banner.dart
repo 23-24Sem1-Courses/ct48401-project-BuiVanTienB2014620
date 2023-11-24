@@ -7,31 +7,30 @@ class AppBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
-      child: Container(
-        width: 400, // Điều chỉnh chiều rộng
-        height: 100, // Điều chỉnh chiều cao
-        margin: const EdgeInsets.only(bottom: 60.0),
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          color: Colors.teal,
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 4,
-              color: Colors.white,
-              offset: Offset(0, 9),
-            )
-          ],
-        ),
-        child: Center(
-          child: Text(
-            'Shop DT ',
-            style: TextStyle(
-              color: const Color.fromARGB(255, 185, 155, 155),
-              fontSize: 50,
-              fontFamily: 'Anton',
-              fontWeight: FontWeight.normal,
-            ),
+    return Container(
+      width: 400, // Điều chỉnh chiều rộng
+      height: 100, // Điều chỉnh chiều cao
+      margin: const EdgeInsets.only(bottom: 70.0),
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 59, 153, 143),
+        borderRadius: BorderRadius.circular(10.0), // Điều chỉnh độ cong của góc
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 10,
+            color: Colors.white,
+            offset: Offset(0, 5),
+          )
+        ],
+      ),
+      child: Center(
+        child: Text(
+          'SHOP VT ',
+          style: TextStyle(
+            color: Color.fromARGB(255, 247, 137, 137),
+            fontSize: 60,
+            fontFamily: 'Anton',
+            fontWeight: FontWeight.normal,
           ),
         ),
       ),
